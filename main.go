@@ -49,6 +49,15 @@ func newTodo(c echo.Context) error {
 	return c.JSON(http.StatusOK, t)
 }
 
+func delTodo(c echo.Context) error {
+	db = db.Delete(todo{}, "id = ?", c.Param("id"))
+	if db.Error != nil {
+		return db.Error
+	}
+
+	return c.String(http.StatusOK, "deleted")
+}
+
 func init() {
 	var err error
 	db, err = gorm.Open("sqlite3", "local.db")
@@ -62,6 +71,7 @@ func init() {
 func main() {
 	// Echo instance
 	e := echo.New()
+	e.Use(middleware.CORS())
 
 	// Middleware
 	e.Use(middleware.Logger())
@@ -71,6 +81,7 @@ func main() {
 	e.GET("/", hello)
 	e.GET("/todos", getTodos)
 	e.POST("/todo", newTodo)
+	e.DELETE("/todo/:id", delTodo)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
