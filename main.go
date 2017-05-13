@@ -96,7 +96,7 @@ func main() {
 	port := ":1323"
 
 	if os.Getenv("PORT") != "" {
-		port = os.Getenv("PORT")
+		port = ":" + os.Getenv("PORT")
 	}
 	// Start server
 	e.Logger.Fatal(e.Start(port))
