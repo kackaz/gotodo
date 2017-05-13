@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"os"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/labstack/echo"
@@ -91,6 +93,11 @@ func main() {
 	e.POST("/todos", newTodo)
 	e.DELETE("/todo/:id", delTodo)
 
+	port := ":1323"
+
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
+	}
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(port))
 }
