@@ -89,9 +89,8 @@ func main() {
 	// Routes
 	e.GET("/", hello)
 	e.GET("/todos", getTodos)
-	e.POST("/todo", newTodo)
 	e.POST("/todos", newTodo)
-	e.DELETE("/todo/:id", delTodo)
+	e.DELETE("/todos/:id", delTodo)
 
 	port := ":1323"
 
