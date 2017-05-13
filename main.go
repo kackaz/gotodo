@@ -19,8 +19,9 @@ func hello(c echo.Context) error {
 
 type todo struct {
 	gorm.Model
+	IDs   string `json:"id"`
 	Topic string `json:"topic"`
-	Done  bool   `json:"done"`
+	// Done  bool   `json:"done"`
 }
 
 func getTodos(c echo.Context) error {
@@ -41,6 +42,12 @@ func newTodo(c echo.Context) error {
 		return err
 	}
 
+	// id, err := strconv.Atoi(t.IDs)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	// t.ID = uint(id)
+
 	db = db.Create(&t)
 	if db.Error != nil {
 		return db.Error
@@ -50,7 +57,7 @@ func newTodo(c echo.Context) error {
 }
 
 func delTodo(c echo.Context) error {
-	db = db.Delete(todo{}, "id = ?", c.Param("id"))
+	db = db.Delete(todo{}, "ids = ?", c.Param("id"))
 	if db.Error != nil {
 		return db.Error
 	}
@@ -81,6 +88,7 @@ func main() {
 	e.GET("/", hello)
 	e.GET("/todos", getTodos)
 	e.POST("/todo", newTodo)
+	e.POST("/todos", newTodo)
 	e.DELETE("/todo/:id", delTodo)
 
 	// Start server
